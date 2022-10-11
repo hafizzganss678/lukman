@@ -40,22 +40,7 @@ console.log(color('[ STATUS ]', 'cyan'), color('Bot Online', 'yellow'))
 console.log(color('[ INFO ]', 'cyan'), color(`Informasi Owner`, 'yellow'))
 console.log(color('Wangsap :', 'cyan'), color(` 6283847178421`, 'yellow'))
 
-sock.ws.on('CB:Blocklist', json => {
-		if (blocked.length > 2) return
-	    for (let i of json[1].blocklist) {
-	    	blocked.push(i.replace('c.us','s.whatsapp.net'))
-	    }
-	})
 
-sock.ws.on('CB:call', async (json) => {
-    const callerId = json.content[0].attrs['call-creator']
-    if (json.content[0].tag == 'offer') {
-    let pa7rick = await sock.sendContact(callerId, global.owner)
-    sock.sendMessage(callerId, { text: `Sistem Otomatis Block!!!\nJangan Menelpon Bot!!!\nSilahkan Hubungi Owner Untuk Dibuka!!!`}, { quoted : pa7rick })
-    await sleep(8000)
-    await sock.updateBlockStatus(callerId, "block")
-    }
-    })
 
 sock.browserDescription = ["CyberExe Multi-Device", "Safari", "1.0.0"];
 
@@ -92,9 +77,17 @@ sock.ev.on('group-participants.update', async (anu) => {
                     ppgroup = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
                 }
                 if (anu.action == 'add') {
+             sock.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `Welcome To ${metadata.subject} @${num.split("@")[0]}
                     
+*_JANGAN LUPA INTRO_*
+️Nama :
+Umur :
+Hobby :
+Gender :
+Asal Kota :` })
                 } else if (anu.action == 'remove') {
-                    
+                    sock.sendMessage(anu.id, { image: { url: ppuser }, contextInfo: { mentionedJid: [num] }, caption: `@${num.split("@")[0]} Leaving To ${metadata.subject}` })
+                }
             }
         } catch (err) {
             console.log(err)
@@ -162,7 +155,7 @@ sock.setStatus = (status) => {
         return status
     }
 
-sock.public = true
+sock.public = false
 
 sock.serializeM = (m) => smsg(sock, m, store)
 
